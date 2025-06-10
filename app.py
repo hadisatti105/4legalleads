@@ -51,6 +51,7 @@ async def submit(
     # ----- PING -----
     ping_payload = {
         "Mode": "ping",
+        "Format": "JSON",
         "Key": API_KEY,
         "API_Action": "custom4llIprSubmitLeadWithComboCheck",
         "Match_With_Partner_ID": MATCH_WITH_PARTNER_ID,
@@ -88,6 +89,7 @@ async def submit(
         post_payload = ping_payload.copy()
         post_payload.update({
             "Mode": "post",
+            "Format": "JSON",
             "App_ID": "888",
             "Start_Date_Time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "Lead_ID": lead_id,
