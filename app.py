@@ -1,39 +1,38 @@
-# app.py
-from fastapi import FastAPI, Form, Request
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-import requests
 import uuid
-import json
-import os
+import requests
 
 app = FastAPI()
-
 templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# In-memory store for Ping/Post payloads
-ping_post_store = {}
+# In-memory storage for PING/POST results
+results_store = {}
 
-@app.get("/")
-def form_get(request: Request):
+@app.get("/", response_class=HTMLResponse)
+async def get_form(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/submit")
-def form_post(
+async def submit_form(
     request: Request,
     ZIP: str = Form(...),
     Language: str = Form(...),
     Origin_Phone_Area_Code: str = Form(...),
+    Origin_Phone_Prefix: str = Form(...),
+    Origin_Phone_Suffix: str = Form(...),
     Filter_1: str = Form(...),
     Sub_ID: str = Form(...),
     Have_Attorney: str = Form(...),
     Trusted_Form_URL: str = Form(...),
-    tc_id: str = Form(...),
+    tc_id: str = Form(...)
 ):
+    # Build full phone number parts
+    Origin_Phone_Full = f"{Origin_Phone_Area_Code}{Origin_Phone_Prefix}{Origin_Phone_Suffix}"
 
-    # Build PING payload
+    # Prepare PING payload
     ping_payload = {
         "Format": "JSON",
         "Mode": "ping",
@@ -46,6 +45,8 @@ def form_post(
         "Language": Language,
         "Origin_Phone_Country_Code": "1",
         "Origin_Phone_Area_Code": Origin_Phone_Area_Code,
+        "Origin_Phone_Prefix": Origin_Phone_Prefix,
+        "Origin_Phone_Suffix": Origin_Phone_Suffix,
         "Terminating_Phone_Country_Code": "1",
         "Terminating_Phone": "2534870338",
         "Filter_1": Filter_1,
@@ -53,64 +54,42 @@ def form_post(
         "Sub_ID": Sub_ID,
         "Have_Attorney": Have_Attorney,
         "Trusted_Form_URL": Trusted_Form_URL,
-        "tc_id": tc_id,
+        "tc_id": tc_id
     }
 
-    # Send Ping
-    ping_response = requests.post(
-        "https://leads.4legalleads.com/new_api/api.php", data=ping_payload
-    )
+    # Send PING request
+    ping_response = requests.post("https://leads.4legalleads.com/new_api/api.php", data=ping_payload)
+    ping_result = ping_response.text
 
-    ping_response_json = ping_response.json()
+    # Check if PING matched and prepare POST if applicable
+    post_result = "PING did not match, no POST sent."
+    lead_id = None
 
-    # If Matched, do POST
-    lead_id = ping_response_json.get("response", {}).get("lead_id")
-    post_response_json = {}
-    if ping_response_json.get("response", {}).get("status") == "Matched" and lead_id:
+    if '"Matched"' in ping_result:
+        # Extract Lead_ID from response (simplified)
+        lead_id = ping_response.json()["response"]["lead_id"]
+
+        # Prepare POST payload (same as ping but Mode=post and Lead_ID included)
         post_payload = ping_payload.copy()
         post_payload["Mode"] = "post"
         post_payload["Lead_ID"] = lead_id
 
-        post_response = requests.post(
-            "https://leads.4legalleads.com/new_api/api.php", data=post_payload
-        )
-        post_response_json = post_response.json()
+        post_response = requests.post("https://leads.4legalleads.com/new_api/api.php", data=post_payload)
+        post_result = post_response.text
 
-    # Save the transaction for /view page
+    # Store results
     record_id = str(uuid.uuid4())
-    ping_post_store[record_id] = {
+    results_store[record_id] = {
         "ping_payload": ping_payload,
-        "ping_response": ping_response_json,
-        "post_payload": post_payload if lead_id else {},
-        "post_response": post_response_json,
+        "ping_response": ping_result,
+        "post_response": post_result
     }
 
     return RedirectResponse(url=f"/view/{record_id}", status_code=302)
 
-@app.get("/view/{record_id}")
-def view_record(request: Request, record_id: str):
-    record = ping_post_store.get(record_id)
-    if not record:
-        return templates.TemplateResponse(
-            "view.html",
-            {
-                "request": request,
-                "ping_payload": {},
-                "ping_response": {},
-                "post_payload": {},
-                "post_response": {},
-                "record_id": record_id,
-            },
-        )
-
-    return templates.TemplateResponse(
-        "view.html",
-        {
-            "request": request,
-            "ping_payload": record["ping_payload"],
-            "ping_response": record["ping_response"],
-            "post_payload": record["post_payload"],
-            "post_response": record["post_response"],
-            "record_id": record_id,
-        },
-    )
+@app.get("/view/{record_id}", response_class=HTMLResponse)
+async def view_result(request: Request, record_id: str):
+    result = results_store.get(record_id)
+    if not result:
+        return HTMLResponse(content="Record not found.", status_code=404)
+    return templates.TemplateResponse("view.html", {"request": request, "record_id": record_id, **result})

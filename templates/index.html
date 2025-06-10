@@ -1,48 +1,62 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>4LegalLeads Ping/Post Form</title>
+    <title>4LegalLeads - Call Ping/Post Form</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        label { display: block; margin-top: 10px; }
-        input, select { width: 300px; padding: 5px; }
-        button { margin-top: 20px; padding: 10px 20px; }
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; }
+        form { max-width: 600px; margin: auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        button { margin-top: 20px; padding: 10px 20px; background-color: #007BFF; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
-    <h1>4LegalLeads Call Transfers Ping/Post Form</h1>
-    <form method="post" action="/submit">
-        <label>ZIP:</label>
+    <h1>4LegalLeads - Call Ping/Post Form</h1>
+    <form action="/submit" method="post">
+        <label>ZIP</label>
         <input type="text" name="ZIP" required>
 
-        <label>Language:</label>
+        <label>Language</label>
         <select name="Language" required>
             <option value="English">English</option>
             <option value="Spanish">Spanish</option>
         </select>
 
-        <label>Origin Phone Area Code (3 digits):</label>
+        <label>Origin Phone Area Code</label>
         <input type="text" name="Origin_Phone_Area_Code" required>
 
-        <label>Filter_1 (Legal Category):</label>
-        <input type="text" name="Filter_1" required value="Auto Accident Injury">
+        <label>Origin Phone Prefix</label>
+        <input type="text" name="Origin_Phone_Prefix" required>
 
-        <label>Sub_ID:</label>
-        <input type="text" name="Sub_ID" required value="abc123">
+        <label>Origin Phone Suffix</label>
+        <input type="text" name="Origin_Phone_Suffix" required>
 
-        <label>Have Attorney:</label>
+        <label>Filter_1 (Legal Category)</label>
+        <select name="Filter_1" required>
+            <option value="Auto Accident Injury">Auto Accident Injury</option>
+            <option value="Personal Injury">Personal Injury</option>
+            <option value="Medical Malpractice">Medical Malpractice</option>
+            <option value="Workers Comp">Workers Comp</option>
+            <option value="Mass Tort">Mass Tort</option>
+        </select>
+
+        <label>Sub ID</label>
+        <input type="text" name="Sub_ID" required>
+
+        <label>Have Attorney?</label>
         <select name="Have_Attorney" required>
             <option value="No">No</option>
             <option value="Yes">Yes</option>
             <option value="Yes, but I want a new lawyer">Yes, but I want a new lawyer</option>
         </select>
 
-        <label>Trusted Form URL:</label>
-        <input type="text" name="Trusted_Form_URL" required>
+        <label>Trusted Form URL</label>
+        <input type="url" name="Trusted_Form_URL" required>
 
-        <label>tc_id:</label>
-        <input type="text" name="tc_id" required>
+        <label>tc_id (Landing Page ID URL)</label>
+        <input type="url" name="tc_id" required>
 
         <button type="submit">Submit Ping/Post</button>
     </form>

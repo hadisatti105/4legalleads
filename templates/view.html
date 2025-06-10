@@ -1,29 +1,25 @@
-<!-- templates/view.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>View Ping/Post Record {{ record_id }}</title>
+    <title>View Result - {{ record_id }}</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        pre { background: #f4f4f4; padding: 10px; border: 1px solid #ccc; }
-        h2 { margin-top: 20px; }
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; }
+        pre { background: #fff; border: 1px solid #ccc; padding: 15px; border-radius: 8px; overflow-x: auto; }
     </style>
 </head>
 <body>
-    <h1>Ping/Post Record: {{ record_id }}</h1>
+    <h1>Ping/Post Record ID: {{ record_id }}</h1>
 
-    <h2>Ping Payload:</h2>
+    <h2>🔸 Ping Payload</h2>
     <pre>{{ ping_payload | tojson(indent=2) }}</pre>
 
-    <h2>Ping Response:</h2>
-    <pre>{{ ping_response | tojson(indent=2) }}</pre>
+    <h2>🔸 Ping Response</h2>
+    <pre>{{ ping_response }}</pre>
 
-    <h2>Post Payload:</h2>
-    <pre>{{ post_payload | tojson(indent=2) }}</pre>
+    <h2>🔸 Post Response</h2>
+    <pre>{{ post_response }}</pre>
 
-    <h2>Post Response:</h2>
-    <pre>{{ post_response | tojson(indent=2) }}</pre>
-
-    <p><a href="/">← Back to Form</a></p>
+    <a href="/">← Back to Form</a>
 </body>
 </html>
