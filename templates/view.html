@@ -1,39 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Ping/Post View</title>
+    <meta charset="UTF-8" />
+    <title>Ping/Post View - {{ record_id }}</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-        pre { background: #fff; padding: 15px; border: 1px solid #ccc; overflow-x: auto; }
-        h2 { color: #333; }
-        .section { margin-bottom: 30px; }
+        body { font-family: monospace; padding: 20px; background: #f9f9f9; color: #333; }
+        pre { background: #eee; padding: 10px; overflow-x: auto; }
+        h1 { color: #007bff; }
     </style>
 </head>
 <body>
-    <h2>Ping/Post Record ID: {{ uid }}</h2>
+    <h1>Ping/Post Record ID: {{ record_id }}</h1>
 
-    <div class="section">
-        <h3>Ping Payload</h3>
-        <pre>{{ ping_data.payload | tojson(indent=2) }}</pre>
-        <h3>Ping Response</h3>
-        <pre>{{ ping_data.response | tojson(indent=2) }}</pre>
-    </div>
-
-    {% if ping_data.response.response.status == 'Matched' %}
-    <form action="/post-lead" method="post">
-        <input type="hidden" name="uid" value="{{ uid }}">
-        <input type="hidden" name="lead_id" value="{{ ping_data.response.response.lead_id }}">
-        <button type="submit">Post This Lead</button>
-    </form>
+    <h2>Ping Payload</h2>
+    {% if ping_payload %}
+    <pre>{{ ping_payload }}</pre>
+    {% else %}
+    <p>No ping payload found.</p>
     {% endif %}
 
-    {% if post_data.payload %}
-    <div class="section">
-        <h3>Post Payload</h3>
-        <pre>{{ post_data.payload | tojson(indent=2) }}</pre>
-        <h3>Post Response</h3>
-        <pre>{{ post_data.response | tojson(indent=2) }}</pre>
-    </div>
+    <h2>Ping Response</h2>
+    {% if ping_response %}
+    <pre>{{ ping_response }}</pre>
+    {% else %}
+    <p>No ping response found.</p>
     {% endif %}
 </body>
 </html>
