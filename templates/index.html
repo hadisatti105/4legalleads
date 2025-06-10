@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>4LegalLeads Ping/Post Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f8f8;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+        input, textarea, select, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .response {
+            background-color: #e0f7fa;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h2>4LegalLeads - Auto Accident Injury Ping/Post Form</h2>
+
+    <form action="/submit" method="post">
+        First Name: <input type="text" name="first_name" required>
+        Last Name: <input type="text" name="last_name" required>
+        Phone: <input type="text" name="phone" required>
+        Email: <input type="email" name="email" required>
+        Zip Code: <input type="text" name="zip_code" required>
+        Comments: <textarea name="comments" required></textarea>
+        Trusted Form URL: <input type="text" name="trusted_form_url" required>
+        Type Of Legal Problem: <input type="text" name="type_of_legal_problem" value="Auto Accident Injury" readonly>
+        User Agent: <input type="text" name="user_agent" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0" required>
+        Incident Date (MM/DD/YYYY): <input type="text" name="incident_date" required>
+
+        Doctor Treatment:
+        <select name="doctor_treatment" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        Injury Type: <input type="text" name="injury_type" required>
+
+        Were You At Fault:
+        <select name="were_you_at_fault" required>
+            <option value="No">No</option>
+            <option value="Yes, I was cited or caused the accident">Yes, I was cited or caused the accident</option>
+            <option value="Yes, but it was the result of a tree, animal, or other act of nature">Yes, but it was the result of a tree, animal, or other act of nature</option>
+            <option value="Yes">Yes</option>
+        </select>
+
+        Have Insurance:
+        <select name="have_insurance" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            <option value="I don't know">I don't know</option>
+        </select>
+
+        Have Attorney:
+        <select name="have_attorney" required>
+            <option value="Yes">Yes</option>
+            <option value="Yes, but I want a new lawyer">Yes, but I want a new lawyer</option>
+            <option value="No">No</option>
+        </select>
+
+        Language: <input type="text" name="language" value="English" required>
+        IP Address: <input type="text" name="ip_address" required>
+        Sub ID: <input type="text" name="sub_id" value="main_test" required>
+
+        <button type="submit">Ping Lead</button>
+    </form>
+
+    {% if ping_data %}
+        <div class="response">
+            <h3>Ping Response:</h3>
+            <pre>{{ ping_data }}</pre>
+        </div>
+
+        <div class="response">
+            <h3>Raw Ping JSON:</h3>
+            <pre>{{ raw_ping }}</pre>
+        </div>
+
+        {% if ping_data.response.status == 'Matched' %}
+            <form action="/post-lead" method="post">
+                <input type="hidden" name="lead_id" value="{{ ping_data.response.lead_id }}">
+                <input type="hidden" name="form_data" value="{{ form_data }}">
+                <button type="submit">Post Lead</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    {% if post_data %}
+        <div class="response">
+            <h3>Post Response:</h3>
+            <pre>{{ post_data }}</pre>
+        </div>
+
+        <div class="response">
+            <h3>Raw Post JSON:</h3>
+            <pre>{{ raw_post }}</pre>
+        </div>
+    {% endif %}
+</body>
+</html>
