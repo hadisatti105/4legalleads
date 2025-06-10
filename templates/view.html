@@ -1,29 +1,29 @@
+<!-- templates/view.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <title>Ping/Post View - {{ record_id }}</title>
+    <title>View Ping/Post Record {{ record_id }}</title>
     <style>
-        body { font-family: monospace; padding: 20px; background: #f9f9f9; color: #333; }
-        pre { background: #eee; padding: 10px; overflow-x: auto; }
-        h1 { color: #007bff; }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        pre { background: #f4f4f4; padding: 10px; border: 1px solid #ccc; }
+        h2 { margin-top: 20px; }
     </style>
 </head>
 <body>
-    <h1>Ping/Post Record ID: {{ record_id }}</h1>
+    <h1>Ping/Post Record: {{ record_id }}</h1>
 
-    <h2>Ping Payload</h2>
-    {% if ping_payload %}
-    <pre>{{ ping_payload }}</pre>
-    {% else %}
-    <p>No ping payload found.</p>
-    {% endif %}
+    <h2>Ping Payload:</h2>
+    <pre>{{ ping_payload | tojson(indent=2) }}</pre>
 
-    <h2>Ping Response</h2>
-    {% if ping_response %}
-    <pre>{{ ping_response }}</pre>
-    {% else %}
-    <p>No ping response found.</p>
-    {% endif %}
+    <h2>Ping Response:</h2>
+    <pre>{{ ping_response | tojson(indent=2) }}</pre>
+
+    <h2>Post Payload:</h2>
+    <pre>{{ post_payload | tojson(indent=2) }}</pre>
+
+    <h2>Post Response:</h2>
+    <pre>{{ post_response | tojson(indent=2) }}</pre>
+
+    <p><a href="/">← Back to Form</a></p>
 </body>
 </html>

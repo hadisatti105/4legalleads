@@ -1,3 +1,4 @@
+# app.py
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -10,89 +11,106 @@ import os
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# In-memory store for pings & posts (for /view/ page)
-PING_POST_STORE = {}
+# In-memory store for Ping/Post payloads
+ping_post_store = {}
 
 @app.get("/")
-def index(request: Request):
+def form_get(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/submit")
-def submit(
+def form_post(
     request: Request,
-    zip_code: str = Form(...),
-    language: str = Form(...),
-    origin_area_code: str = Form(...),
-    origin_prefix: str = Form(...),
-    origin_suffix: str = Form(...),
-    terminating_phone: str = Form(...),
-    filter_1: str = Form(...),
-    sub_id: str = Form(...),
-    have_attorney: str = Form(...),
-    trusted_form_url: str = Form(...),
+    ZIP: str = Form(...),
+    Language: str = Form(...),
+    Origin_Phone_Area_Code: str = Form(...),
+    Filter_1: str = Form(...),
+    Sub_ID: str = Form(...),
+    Have_Attorney: str = Form(...),
+    Trusted_Form_URL: str = Form(...),
     tc_id: str = Form(...),
 ):
 
-    # Build Ping payload
-    payload = {
+    # Build PING payload
+    ping_payload = {
+        "Format": "JSON",
+        "Mode": "ping",
+        "Key": "a1598e131406605ba08ef7e9b5c0f7d3568b568d532ee38b32c1afe780a92716",
         "API_Action": "custom4llIprSubmitLeadWithComboCheck",
         "Match_With_Partner_ID": "20827",
         "TYPE": "9",
         "SRC": "DurationLKC120Transfer",
-        "ZIP": zip_code,
-        "Language": language,
+        "ZIP": ZIP,
+        "Language": Language,
         "Origin_Phone_Country_Code": "1",
-        "Origin_Phone_Area_Code": origin_area_code,
-        "Origin_Phone_Prefix": origin_prefix,
-        "Origin_Phone_Suffix": origin_suffix,
+        "Origin_Phone_Area_Code": Origin_Phone_Area_Code,
         "Terminating_Phone_Country_Code": "1",
-        "Terminating_Phone": terminating_phone,
-        "Filter_1": filter_1,
+        "Terminating_Phone": "2534870338",
+        "Filter_1": Filter_1,
         "Return_Best_Price": "1",
-        "Sub_ID": sub_id,
-        "Have_Attorney": have_attorney,
-        "Trusted_Form_URL": trusted_form_url,
+        "Sub_ID": Sub_ID,
+        "Have_Attorney": Have_Attorney,
+        "Trusted_Form_URL": Trusted_Form_URL,
         "tc_id": tc_id,
-        "Key": "a1598e131406605ba08ef7e9b5c0f7d3568b568d532ee38b32c1afe780a92716",
-        "Format": "JSON",
-        "Mode": "ping"
     }
 
-    # Send Ping request
+    # Send Ping
     ping_response = requests.post(
-        "https://leads.4legalleads.com/new_api/api.php",
-        data=payload
+        "https://leads.4legalleads.com/new_api/api.php", data=ping_payload
     )
-    try:
-        ping_json = ping_response.json()
-    except:
-        ping_json = {"error": "Invalid JSON response"}
 
-    # Save Ping payload + response
+    ping_response_json = ping_response.json()
+
+    # If Matched, do POST
+    lead_id = ping_response_json.get("response", {}).get("lead_id")
+    post_response_json = {}
+    if ping_response_json.get("response", {}).get("status") == "Matched" and lead_id:
+        post_payload = ping_payload.copy()
+        post_payload["Mode"] = "post"
+        post_payload["Lead_ID"] = lead_id
+
+        post_response = requests.post(
+            "https://leads.4legalleads.com/new_api/api.php", data=post_payload
+        )
+        post_response_json = post_response.json()
+
+    # Save the transaction for /view page
     record_id = str(uuid.uuid4())
-    PING_POST_STORE[record_id] = {
-        "ping_payload": payload,
-        "ping_response": ping_json
+    ping_post_store[record_id] = {
+        "ping_payload": ping_payload,
+        "ping_response": ping_response_json,
+        "post_payload": post_payload if lead_id else {},
+        "post_response": post_response_json,
     }
 
-    # Redirect to /view/ page
     return RedirectResponse(url=f"/view/{record_id}", status_code=302)
 
 @app.get("/view/{record_id}")
-def view(request: Request, record_id: str):
-    record = PING_POST_STORE.get(record_id)
+def view_record(request: Request, record_id: str):
+    record = ping_post_store.get(record_id)
     if not record:
-        return templates.TemplateResponse("view.html", {
-            "request": request,
-            "record_id": record_id,
-            "ping_payload": None,
-            "ping_response": None
-        })
+        return templates.TemplateResponse(
+            "view.html",
+            {
+                "request": request,
+                "ping_payload": {},
+                "ping_response": {},
+                "post_payload": {},
+                "post_response": {},
+                "record_id": record_id,
+            },
+        )
 
-    return templates.TemplateResponse("view.html", {
-        "request": request,
-        "record_id": record_id,
-        "ping_payload": json.dumps(record["ping_payload"], indent=4),
-        "ping_response": json.dumps(record["ping_response"], indent=4)
-    })
+    return templates.TemplateResponse(
+        "view.html",
+        {
+            "request": request,
+            "ping_payload": record["ping_payload"],
+            "ping_response": record["ping_response"],
+            "post_payload": record["post_payload"],
+            "post_response": record["post_response"],
+            "record_id": record_id,
+        },
+    )
