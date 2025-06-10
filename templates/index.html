@@ -1,62 +1,109 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>4LegalLeads - Call Ping/Post Form</title>
+    <meta charset="UTF-8" />
+    <title>4LegalLeads Ping/Post Tool</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
-        h1 { color: #333; }
-        form { max-width: 600px; margin: auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        label { display: block; margin-top: 15px; font-weight: bold; }
-        input, select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
-        button { margin-top: 20px; padding: 10px 20px; background-color: #007BFF; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
+        form { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, select { width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 15px; background: #007BFF; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
     </style>
 </head>
 <body>
-    <h1>4LegalLeads - Call Ping/Post Form</h1>
+    <h2>4LegalLeads Ping/Post Tool</h2>
     <form action="/submit" method="post">
+        <label>Filter_1 (Legal Category)</label>
+        <input type="text" name="filter_1" value="Auto Accident Injury" required />
+
         <label>ZIP</label>
-        <input type="text" name="ZIP" required>
+        <input type="text" name="zip_code" value="99755" required />
 
         <label>Language</label>
-        <select name="Language" required>
-            <option value="English">English</option>
-            <option value="Spanish">Spanish</option>
+        <select name="language" required>
+            <option>English</option>
+            <option>Spanish</option>
         </select>
 
         <label>Origin Phone Area Code</label>
-        <input type="text" name="Origin_Phone_Area_Code" required>
+        <input type="text" name="origin_phone_area_code" required />
 
         <label>Origin Phone Prefix</label>
-        <input type="text" name="Origin_Phone_Prefix" required>
+        <input type="text" name="origin_phone_prefix" required />
 
         <label>Origin Phone Suffix</label>
-        <input type="text" name="Origin_Phone_Suffix" required>
+        <input type="text" name="origin_phone_suffix" required />
 
-        <label>Filter_1 (Legal Category)</label>
-        <select name="Filter_1" required>
-            <option value="Auto Accident Injury">Auto Accident Injury</option>
-            <option value="Personal Injury">Personal Injury</option>
-            <option value="Medical Malpractice">Medical Malpractice</option>
-            <option value="Workers Comp">Workers Comp</option>
-            <option value="Mass Tort">Mass Tort</option>
-        </select>
+        <label>Sub_ID</label>
+        <input type="text" name="sub_id" value="100" required />
 
-        <label>Sub ID</label>
-        <input type="text" name="Sub_ID" required>
-
-        <label>Have Attorney?</label>
-        <select name="Have_Attorney" required>
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-            <option value="Yes, but I want a new lawyer">Yes, but I want a new lawyer</option>
+        <label>Have Attorney</label>
+        <select name="have_attorney" required>
+            <option>No</option>
+            <option>Yes</option>
+            <option>Yes, but I want a new lawyer</option>
         </select>
 
         <label>Trusted Form URL</label>
-        <input type="url" name="Trusted_Form_URL" required>
+        <input type="text" name="trusted_form_url" required />
 
-        <label>tc_id (Landing Page ID URL)</label>
-        <input type="url" name="tc_id" required>
+        <label>tc_id</label>
+        <input type="text" name="tc_id" required />
+
+        <label>Degree Of Interest</label>
+        <select name="degree_of_interest" required>
+            <option>3</option>
+            <option>2</option>
+            <option>1</option>
+            <option>0</option>
+        </select>
+
+        <label>Landing Page</label>
+        <input type="text" name="landing_page" required />
+
+        <label>Incident Date</label>
+        <select name="incident_date" required>
+            <option>Within 1 Year</option>
+            <option>Within 2 Years</option>
+            <option>Within 3 Years</option>
+            <option>Within 4 Years</option>
+            <option>Within 5 Years</option>
+            <option>Within 6 Years</option>
+            <option>Greater Than 6 Years</option>
+        </select>
+
+        <label>Injury Type</label>
+        <select name="injury_type" required>
+            <option>Anxiety</option>
+            <option>Back or Neck Pain</option>
+            <option>Brain Injury</option>
+            <option>Broken Bones</option>
+            <option>Cuts and Bruises</option>
+            <option>Dog Bite</option>
+            <option>Headaches</option>
+            <option>Loss of Life</option>
+            <option>Loss of Limb</option>
+            <option>Memory Loss</option>
+            <option>No Injury</option>
+            <option>Spinal Cord Injury or Paralysis</option>
+            <option>Whiplash</option>
+            <option>Other</option>
+        </select>
+
+        <label>Were You At Fault?</label>
+        <select name="were_you_at_fault" required>
+            <option>No</option>
+            <option>Yes</option>
+            <option>Unqualified</option>
+        </select>
+
+        <label>Doctor Treatment</label>
+        <select name="doctor_treatment" required>
+            <option>Yes</option>
+            <option>No</option>
+        </select>
 
         <button type="submit">Submit Ping/Post</button>
     </form>
