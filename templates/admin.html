@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Admin Dashboard - All Records</h1>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>Record ID</th>
+            <th>Timestamp</th>
+            <th>Filter_1</th>
+            <th>ZIP</th>
+            <th>Phone</th>
+            <th>Trusted Form URL</th>
+            <th>Landing Page</th>
+            <th>Sub_ID</th>
+            <th>Have Attorney</th>
+            <th>Incident Date</th>
+            <th>Injury Type</th>
+            <th>Were You At Fault</th>
+            <th>Doctor Treatment</th>
+            <th>Ping Response</th>
+            <th>Post Response</th>
+            <th>View</th>
+        </tr>
+        {% for record_id, record in records.items() %}
+        <tr>
+            <td>{{ record_id }}</td>
+            <td>{{ record.timestamp }}</td>
+            <td>{{ record.ping_payload.Filter_1 }}</td>
+            <td>{{ record.ping_payload.ZIP }}</td>
+            <td>({{ record.ping_payload.Origin_Phone_Area_Code }}) {{ record.ping_payload.Origin_Phone_Prefix }}-{{ record.ping_payload.Origin_Phone_Suffix }}</td>
+            <td>{{ record.ping_payload.Trusted_Form_URL }}</td>
+            <td>{{ record.ping_payload.Landing_Page }}</td>
+            <td>{{ record.ping_payload.Sub_ID }}</td>
+            <td>{{ record.ping_payload.Have_Attorney }}</td>
+            <td>{{ record.ping_payload.get('Incident_Date', '') }}</td>
+            <td>{{ record.ping_payload.get('Injury_Type', '') }}</td>
+            <td>{{ record.ping_payload.get('Were_You_At_Fault', '') }}</td>
+            <td>{{ record.ping_payload.get('Doctor_Treatment', '') }}</td>
+            <td>{{ record.ping_response }}</td>
+            <td>{{ record.post_response }}</td>
+            <td><a href="/view/{{ record_id }}">View</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Admin Login</h1>
+    <form method="post" action="/login">
+        <input type="password" name="password" placeholder="Enter Admin Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p style="color:red;">{{ error }}</p>
+</body>
+</html>

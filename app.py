@@ -1,6 +1,6 @@
-# app.py FINAL CLEAN FULL VERSION with Ping/Post + CSS
+# app.py FINAL version with admin login + admin record view
 
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form, Request, Response
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -10,15 +10,17 @@ from datetime import datetime
 import re
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Templates
-templates = Jinja2Templates(directory="templates")
-
 # In-memory storage for ping/post records
 records = {}
+
+# Simple admin session (in-memory, for demo)
+ADMIN_PASSWORD = "Hadi@123"
+admin_logged_in = False
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -92,7 +94,6 @@ async def submit(
 
     # If Ping Matched → do POST
     if "<status>Matched</status>" in ping_response_text:
-        # Extract Lead_ID
         lead_id_match = re.search(r"<lead_id>(.*?)</lead_id>", ping_response_text)
         lead_id = lead_id_match.group(1) if lead_id_match else ""
 
@@ -141,6 +142,7 @@ async def submit(
 
     # Save record
     records[record_id] = {
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "ping_payload": ping_payload,
         "ping_response": ping_response_text,
         "post_payload": post_payload,
@@ -161,3 +163,25 @@ async def view_record(request: Request, record_id: str):
         "post_payload": record.get("post_payload", {}),
         "post_response": record.get("post_response", "")
     })
+
+# Admin Login
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request, "error": ""})
+
+@app.post("/login", response_class=HTMLResponse)
+async def login(request: Request, password: str = Form(...)):
+    global admin_logged_in
+    if password == ADMIN_PASSWORD:
+        admin_logged_in = True
+        return RedirectResponse(url="/admin", status_code=302)
+    else:
+        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid password"})
+
+# Admin Dashboard
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_dashboard(request: Request):
+    global admin_logged_in
+    if not admin_logged_in:
+        return RedirectResponse(url="/login", status_code=302)
+    return templates.TemplateResponse("admin.html", {"request": request, "records": records})
