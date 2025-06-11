@@ -1,52 +1,13 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>4LegalLeads - Ping/Post Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f9f9f9;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 600px;
-        }
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #45a049;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <title>Legal Leads PING / POST Test</title>
 </head>
 <body>
-    <h1>4LegalLeads - Ping/Post Form</h1>
+    <h1>Submit Legal Lead - PING / POST</h1>
     <form method="post" action="/submit">
-        <label>Filter_1 (Legal Category)</label>
+        <label>Filter_1 (Legal Category):</label>
         <select name="filter_1" required>
             <option value="Auto Accident Injury">Auto Accident Injury</option>
             <option value="Personal Injury">Personal Injury</option>
@@ -54,84 +15,39 @@
             <option value="Medical Malpractice">Medical Malpractice</option>
             <option value="Product Liability">Product Liability</option>
         </select>
-
-        <label>ZIP</label>
-        <input type="text" name="zip_code" required value="99755">
-
-        <label>Language</label>
-        <select name="language" required>
-            <option value="English">English</option>
-            <option value="Spanish">Spanish</option>
-        </select>
-
-        <label>Origin Phone Area Code</label>
-        <input type="text" name="origin_area_code" required value="555">
-
-        <label>Origin Phone Prefix</label>
-        <input type="text" name="origin_prefix" required value="123">
-
-        <label>Origin Phone Suffix</label>
-        <input type="text" name="origin_suffix" required value="4567">
-
-        <label>Have Attorney?</label>
+        <br><br>
+        ZIP Code: <input type="text" name="zip_code" required><br><br>
+        Language: <input type="text" name="language" value="English" required><br><br>
+        Origin Phone Area Code: <input type="text" name="origin_area_code" required><br><br>
+        Origin Phone Prefix: <input type="text" name="origin_prefix" required><br><br>
+        Origin Phone Suffix: <input type="text" name="origin_suffix" required><br><br>
+        Have Attorney: 
         <select name="have_attorney" required>
             <option value="No">No</option>
             <option value="Yes">Yes</option>
             <option value="Yes, but I want a new lawyer">Yes, but I want a new lawyer</option>
         </select>
-
-        <label>Trusted Form URL</label>
-        <input type="text" name="trusted_form_url" required value="https://cert.trustedform.com/">
-
-        <label>Sub ID</label>
-        <input type="text" name="sub_id" required value="abc123">
-
-        <label>Incident Date</label>
-        <select name="incident_date" required>
-            <option value="Within 1 Year">Within 1 Year</option>
-            <option value="Within 2 Years">Within 2 Years</option>
-            <option value="Within 3 Years">Within 3 Years</option>
-            <option value="Within 4 Years">Within 4 Years</option>
-            <option value="Within 5 Years">Within 5 Years</option>
-            <option value="Within 6 Years">Within 6 Years</option>
-            <option value="Greater Than 6 Years">Greater Than 6 Years</option>
-        </select>
-
-        <label>Injury Type</label>
-        <select name="injury_type" required>
-            <option value="Anxiety">Anxiety</option>
-            <option value="Back or Neck Pain">Back or Neck Pain</option>
-            <option value="Brain Injury">Brain Injury</option>
-            <option value="Broken Bones">Broken Bones</option>
-            <option value="Cuts and Bruises">Cuts and Bruises</option>
-            <option value="Dog Bite">Dog Bite</option>
-            <option value="Headaches">Headaches</option>
-            <option value="Loss of Life">Loss of Life</option>
-            <option value="Loss of Limb">Loss of Limb</option>
-            <option value="Memory Loss">Memory Loss</option>
-            <option value="No Injury">No Injury</option>
-            <option value="Spinal Cord Injury or Paralysis">Spinal Cord Injury or Paralysis</option>
-            <option value="Whiplash">Whiplash</option>
-            <option value="Other">Other</option>
-        </select>
-
-        <label>Were You At Fault?</label>
+        <br><br>
+        Trusted Form URL: <input type="text" name="trusted_form_url" required><br><br>
+        Sub ID: <input type="text" name="sub_id" required><br><br>
+        Incident Date (MM/DD/YYYY): <input type="text" name="incident_date" required><br><br>
+        Injury Type: <input type="text" name="injury_type" required><br><br>
+        Were You At Fault: 
         <select name="were_you_at_fault" required>
             <option value="No">No</option>
             <option value="Yes">Yes</option>
             <option value="Unqualified">Unqualified</option>
         </select>
-
-        <label>Doctor Treatment?</label>
+        <br><br>
+        Doctor Treatment: 
         <select name="doctor_treatment" required>
             <option value="Yes">Yes</option>
             <option value="No">No</option>
         </select>
+        <br><br>
+        Landing Page URL: <input type="text" name="landing_page" required><br><br>
 
-        <label>Landing Page</label>
-        <input type="text" name="landing_page" required value="http://landing.com">
-
-        <button type="submit">Submit Ping/Post</button>
+        <button type="submit">Submit Lead</button>
     </form>
 </body>
 </html>
