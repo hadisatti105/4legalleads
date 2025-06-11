@@ -1,22 +1,23 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>4LegalLeads Ping/Post Tester</title>
+    <title>4LegalLeads - Ping/Post Form</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
-            background-color: #f7f7f7;
+            background-color: #f9f9f9;
         }
         h1 {
             color: #333;
         }
         form {
-            background-color: #fff;
+            background: #fff;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            max-width: 700px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
         }
         label {
             display: block;
@@ -27,53 +28,26 @@
             width: 100%;
             padding: 8px;
             margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
         }
         button {
             margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #45a049;
-        }
-        .optional-field {
-            display: none;
+            background: #45a049;
         }
     </style>
-    <script>
-        function updateCategoryFields() {
-            const selected = document.getElementById("Filter_1").value;
-            const requiredFields = document.querySelectorAll(".optional-field");
-
-            requiredFields.forEach(field => field.style.display = "none");
-
-            if (["Auto Accident Injury", "Personal Injury", "Workers Comp", "Medical Malpractice", "Product Liability"].includes(selected)) {
-                document.getElementById("Incident_Date").style.display = "block";
-                document.getElementById("Injury_Type").style.display = "block";
-                document.getElementById("Doctor_Treatment").style.display = "block";
-            }
-
-            if (selected === "Auto Accident Injury") {
-                document.getElementById("Were_You_At_Fault").style.display = "block";
-            }
-
-            if (selected === "Product Liability") {
-                document.getElementById("Incident_Date_Option_B").style.display = "block";
-            }
-        }
-    </script>
 </head>
 <body>
-    <h1>4LegalLeads Ping/Post Tester</h1>
+    <h1>4LegalLeads - Ping/Post Form</h1>
     <form method="post" action="/submit">
-        <label for="Filter_1">Filter_1 (Legal Category):</label>
-        <select name="Filter_1" id="Filter_1" onchange="updateCategoryFields()" required>
+        <label>Filter_1 (Legal Category)</label>
+        <select name="filter_1" required>
             <option value="Auto Accident Injury">Auto Accident Injury</option>
             <option value="Personal Injury">Personal Injury</option>
             <option value="Workers Comp">Workers Comp</option>
@@ -81,93 +55,81 @@
             <option value="Product Liability">Product Liability</option>
         </select>
 
-        <label for="ZIP">ZIP:</label>
-        <input type="text" name="ZIP" required>
+        <label>ZIP</label>
+        <input type="text" name="zip_code" required value="99755">
 
-        <label for="Language">Language:</label>
-        <select name="Language" required>
+        <label>Language</label>
+        <select name="language" required>
             <option value="English">English</option>
             <option value="Spanish">Spanish</option>
         </select>
 
-        <label for="Origin_Phone_Area_Code">Origin_Phone_Area_Code:</label>
-        <input type="text" name="Origin_Phone_Area_Code" required>
+        <label>Origin Phone Area Code</label>
+        <input type="text" name="origin_area_code" required value="555">
 
-        <label for="Origin_Phone_Prefix">Origin_Phone_Prefix:</label>
-        <input type="text" name="Origin_Phone_Prefix" required>
+        <label>Origin Phone Prefix</label>
+        <input type="text" name="origin_prefix" required value="123">
 
-        <label for="Origin_Phone_Suffix">Origin_Phone_Suffix:</label>
-        <input type="text" name="Origin_Phone_Suffix" required>
+        <label>Origin Phone Suffix</label>
+        <input type="text" name="origin_suffix" required value="4567">
 
-        <label for="Sub_ID">Sub_ID:</label>
-        <input type="text" name="Sub_ID" required>
-
-        <label for="Have_Attorney">Have_Attorney:</label>
-        <select name="Have_Attorney" required>
+        <label>Have Attorney?</label>
+        <select name="have_attorney" required>
             <option value="No">No</option>
             <option value="Yes">Yes</option>
             <option value="Yes, but I want a new lawyer">Yes, but I want a new lawyer</option>
         </select>
 
-        <label for="Trusted_Form_URL">Trusted_Form_URL:</label>
-        <input type="text" name="Trusted_Form_URL" required>
+        <label>Trusted Form URL</label>
+        <input type="text" name="trusted_form_url" required value="https://cert.trustedform.com/">
 
-        <!-- OPTIONAL FIELDS -->
+        <label>Sub ID</label>
+        <input type="text" name="sub_id" required value="abc123">
 
-        <div class="optional-field" id="Incident_Date">
-            <label for="Incident_Date">Incident_Date (MM/DD/YYYY):</label>
-            <input type="text" name="Incident_Date">
-        </div>
+        <label>Incident Date</label>
+        <select name="incident_date" required>
+            <option value="Within 1 Year">Within 1 Year</option>
+            <option value="Within 2 Years">Within 2 Years</option>
+            <option value="Within 3 Years">Within 3 Years</option>
+            <option value="Within 4 Years">Within 4 Years</option>
+            <option value="Within 5 Years">Within 5 Years</option>
+            <option value="Within 6 Years">Within 6 Years</option>
+            <option value="Greater Than 6 Years">Greater Than 6 Years</option>
+        </select>
 
-        <div class="optional-field" id="Injury_Type">
-            <label for="Injury_Type">Injury_Type:</label>
-            <select name="Injury_Type">
-                <option value="">-- Select Injury Type --</option>
-                <option value="Anxiety">Anxiety</option>
-                <option value="Back or Neck Pain">Back or Neck Pain</option>
-                <option value="Brain Injury">Brain Injury</option>
-                <option value="Broken Bones">Broken Bones</option>
-                <option value="Cuts and Bruises">Cuts and Bruises</option>
-                <option value="Dog Bite">Dog Bite</option>
-                <option value="Headaches">Headaches</option>
-                <option value="Loss of Life">Loss of Life</option>
-                <option value="Loss of Limb">Loss of Limb</option>
-                <option value="Memory Loss">Memory Loss</option>
-                <option value="No Injury">No Injury</option>
-                <option value="Spinal Cord Injury or Paralysis">Spinal Cord Injury or Paralysis</option>
-                <option value="Whiplash">Whiplash</option>
-                <option value="Other">Other</option>
-            </select>
-        </div>
+        <label>Injury Type</label>
+        <select name="injury_type" required>
+            <option value="Anxiety">Anxiety</option>
+            <option value="Back or Neck Pain">Back or Neck Pain</option>
+            <option value="Brain Injury">Brain Injury</option>
+            <option value="Broken Bones">Broken Bones</option>
+            <option value="Cuts and Bruises">Cuts and Bruises</option>
+            <option value="Dog Bite">Dog Bite</option>
+            <option value="Headaches">Headaches</option>
+            <option value="Loss of Life">Loss of Life</option>
+            <option value="Loss of Limb">Loss of Limb</option>
+            <option value="Memory Loss">Memory Loss</option>
+            <option value="No Injury">No Injury</option>
+            <option value="Spinal Cord Injury or Paralysis">Spinal Cord Injury or Paralysis</option>
+            <option value="Whiplash">Whiplash</option>
+            <option value="Other">Other</option>
+        </select>
 
-        <div class="optional-field" id="Were_You_At_Fault">
-            <label for="Were_You_At_Fault">Were_You_At_Fault:</label>
-            <select name="Were_You_At_Fault">
-                <option value="No">No</option>
-                <option value="Yes">Yes</option>
-                <option value="Unqualified">Unqualified</option>
-            </select>
-        </div>
+        <label>Were You At Fault?</label>
+        <select name="were_you_at_fault" required>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+            <option value="Unqualified">Unqualified</option>
+        </select>
 
-        <div class="optional-field" id="Doctor_Treatment">
-            <label for="Doctor_Treatment">Doctor_Treatment:</label>
-            <select name="Doctor_Treatment">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-        </div>
+        <label>Doctor Treatment?</label>
+        <select name="doctor_treatment" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
 
-        <div class="optional-field" id="Incident_Date_Option_B">
-            <label for="Incident_Date_Option_B">Incident_Date_Option_B:</label>
-            <select name="Incident_Date_Option_B">
-                <option value="Less than 1 Year">Less than 1 Year</option>
-                <option value="Less than 2 Years">Less than 2 Years</option>
-                <option value="Less than 3 Years">Less than 3 Years</option>
-                <option value="Less than 4 Years">Less than 4 Years</option>
-                <option value="Less than 5 Years">Less than 5 Years</option>
-                <option value="5 or more Years">5 or more Years</option>
-            </select>
-        </div>
+        <label>Landing Page</label>
+        <input type="text" name="landing_page" required value="http://landing.com">
 
         <button type="submit">Submit Ping/Post</button>
     </form>
