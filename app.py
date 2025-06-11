@@ -1,13 +1,20 @@
-# app.py FINAL version with auto POST after Matched PING
+# app.py FINAL CLEAN FULL VERSION with Ping/Post + CSS
 
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 import requests
 import uuid
 from datetime import datetime
+import re
 
 app = FastAPI()
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Templates
 templates = Jinja2Templates(directory="templates")
 
 # In-memory storage for ping/post records
@@ -58,7 +65,7 @@ async def submit(
         "Return_Best_Price": "1",
         "Sub_ID": sub_id,
         "Have_Attorney": have_attorney,
-        "Trusted_Form_URL": trusted_form_url.strip(),  # Clean trailing tab/spaces
+        "Trusted_Form_URL": trusted_form_url.strip(),
         "Landing_Page": landing_page
     }
 
@@ -86,7 +93,6 @@ async def submit(
     # If Ping Matched → do POST
     if "<status>Matched</status>" in ping_response_text:
         # Extract Lead_ID
-        import re
         lead_id_match = re.search(r"<lead_id>(.*?)</lead_id>", ping_response_text)
         lead_id = lead_id_match.group(1) if lead_id_match else ""
 
