@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>View Lead Record - {{ record_id }}</title>
+    <meta charset="UTF-8">
+    <title>Ping/Post Results</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Lead Record ID: {{ record_id }}</h1>
+    <h2>Ping/Post Results</h2>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% else %}
+        <p><strong>Lead Record ID:</strong> {{ lead_id }}</p>
 
-    <h2>🔸 Ping Payload</h2>
-    <pre>{{ record.ping_payload | tojson(indent=2) }}</pre>
+        <h3>Ping Payload:</h3>
+        <pre>{{ ping_payload | tojson(indent=2) }}</pre>
 
-    <h2>🔸 Ping Response</h2>
-    <pre>{{ record.ping_response | tojson(indent=2) }}</pre>
+        <h3>Ping Response:</h3>
+        <pre>{{ ping_response | tojson(indent=2) }}</pre>
 
-    <h2>🔸 Post Payload</h2>
-    <pre>{{ record.post_payload | tojson(indent=2) }}</pre>
+        <h3>Post Payload:</h3>
+        <pre>{{ post_payload | tojson(indent=2) }}</pre>
 
-    <h2>🔸 Post Response</h2>
-    <pre>{{ record.post_response | tojson(indent=2) }}</pre>
-
+        <h3>Post Response:</h3>
+        <pre>{{ post_response | tojson(indent=2) }}</pre>
+    {% endif %}
     <a href="/">← Back to Form</a>
 </body>
 </html>

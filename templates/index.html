@@ -1,54 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Legal Leads PING / POST Test</title>
+    <meta charset="UTF-8">
+    <title>4LegalLeads Ping/Post Form</title>
     <link rel="stylesheet" href="/static/style.css">
+    <script>
+        function updateFields() {
+            const category = document.getElementById('filter_1').value;
+            const dynamicFields = document.getElementById('dynamicFields');
+
+            if (["Auto Accident Injury", "Personal Injury", "Workers Comp", "Medical Malpractice", "Product Liability"].includes(category)) {
+                dynamicFields.style.display = 'block';
+            } else {
+                dynamicFields.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>Submit Legal Lead - PING / POST</h1>
+    <h2>4LegalLeads Ping/Post Form</h2>
     <form method="post" action="/submit">
         <label>Filter_1 (Legal Category):</label>
-        <select name="filter_1" required>
+        <select name="filter_1" id="filter_1" onchange="updateFields()" required>
             <option value="Auto Accident Injury">Auto Accident Injury</option>
             <option value="Personal Injury">Personal Injury</option>
             <option value="Workers Comp">Workers Comp</option>
             <option value="Medical Malpractice">Medical Malpractice</option>
             <option value="Product Liability">Product Liability</option>
+            <option value="Family Law">Family Law</option>
+            <option value="Other">Other</option>
         </select>
-        <br><br>
-        ZIP Code: <input type="text" name="zip_code" required><br><br>
-        Language: <input type="text" name="language" value="English" required><br><br>
-        Origin Phone Area Code: <input type="text" name="origin_area_code" required><br><br>
-        Origin Phone Prefix: <input type="text" name="origin_prefix" required><br><br>
-        Origin Phone Suffix: <input type="text" name="origin_suffix" required><br><br>
-        Have Attorney: 
+
+        <label>ZIP Code:</label>
+        <input type="text" name="zip_code" required>
+
+        <label>Language:</label>
+        <select name="language" required>
+            <option value="English">English</option>
+            <option value="Spanish">Spanish</option>
+        </select>
+
+        <label>Origin Phone Area Code:</label>
+        <input type="text" name="origin_area_code" required>
+
+        <label>Origin Phone Prefix:</label>
+        <input type="text" name="origin_prefix" required>
+
+        <label>Origin Phone Suffix:</label>
+        <input type="text" name="origin_suffix" required>
+
+        <label>Have Attorney:</label>
         <select name="have_attorney" required>
             <option value="No">No</option>
             <option value="Yes">Yes</option>
             <option value="Yes, but I want a new lawyer">Yes, but I want a new lawyer</option>
         </select>
-        <br><br>
-        Trusted Form URL: <input type="text" name="trusted_form_url" required><br><br>
-        Sub ID: <input type="text" name="sub_id" required><br><br>
-        Incident Date (MM/DD/YYYY): <input type="text" name="incident_date" required><br><br>
-        Injury Type: <input type="text" name="injury_type" required><br><br>
-        Were You At Fault: 
-        <select name="were_you_at_fault" required>
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-            <option value="Unqualified">Unqualified</option>
-        </select>
-        <br><br>
-        Doctor Treatment: 
-        <select name="doctor_treatment" required>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
-        <br><br>
-        Landing Page URL: <input type="text" name="landing_page" required><br><br>
 
-        <button type="submit">Submit Lead</button>
+        <label>Trusted Form URL:</label>
+        <input type="text" name="trusted_form_url" required>
+
+        <label>Sub ID:</label>
+        <input type="text" name="sub_id" required>
+
+        <label>Landing Page:</label>
+        <input type="text" name="landing_page" required>
+
+        <div id="dynamicFields" style="display:none; margin-top:10px;">
+            <label>Incident Date (MM/DD/YYYY):</label>
+            <input type="text" name="incident_date">
+
+            <label>Injury Type:</label>
+            <input type="text" name="injury_type">
+
+            <label>Were You At Fault:</label>
+            <select name="were_you_at_fault">
+                <option value="">-- Select --</option>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="Unqualified">Unqualified</option>
+            </select>
+
+            <label>Doctor Treatment:</label>
+            <select name="doctor_treatment">
+                <option value="">-- Select --</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <button type="submit">Submit</button>
     </form>
 </body>
 </html>
