@@ -1,29 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Ping/Post Results</title>
+    <title>View Ping/Post Record</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h2>Ping/Post Results</h2>
-    {% if error %}
-        <p>{{ error }}</p>
-    {% else %}
-        <p><strong>Lead Record ID:</strong> {{ lead_id }}</p>
+    <div class="container">
+        <h1>Lead Record ID: {{ record_id }}</h1>
 
-        <h3>Ping Payload:</h3>
-        <pre>{{ ping_payload | tojson(indent=2) }}</pre>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% else %}
+            <h2>🔸 Ping Payload</h2>
+            <pre>{{ ping_payload | tojson(indent=2) }}</pre>
 
-        <h3>Ping Response:</h3>
-        <pre>{{ ping_response | tojson(indent=2) }}</pre>
+            <h2>🔸 Ping Response</h2>
+            <pre>{{ ping_response | tojson(indent=2) }}</pre>
 
-        <h3>Post Payload:</h3>
-        <pre>{{ post_payload | tojson(indent=2) }}</pre>
+            <h2>🔸 Post Payload</h2>
+            <pre>{{ post_payload | tojson(indent=2) }}</pre>
 
-        <h3>Post Response:</h3>
-        <pre>{{ post_response | tojson(indent=2) }}</pre>
-    {% endif %}
-    <a href="/">← Back to Form</a>
+            <h2>🔸 Post Response</h2>
+            <pre>{{ post_response | tojson(indent=2) }}</pre>
+        {% endif %}
+
+        <p><a href="/">← Back to Form</a></p>
+    </div>
 </body>
 </html>
