@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Legal Lead Ping/Post Form</title>
+    <title>Legal Call Ping/Post Form</title>
     <link rel="stylesheet" href="/static/style.css">
     <script>
-        function updateCategoryFields() {
-            const category = document.getElementById("filter_1").value;
-            const extraFields = document.getElementById("extraFields");
-
-            if (["Auto Accident Injury", "Personal Injury", "Workers Comp", "Medical Malpractice", "Product Liability"].includes(category)) {
-                extraFields.style.display = "block";
+        function updateFields() {
+            const category = document.getElementById('filter_1').value;
+            const extraFields = document.getElementById('extra-fields');
+            if (category === 'Auto Accident Injury' || category === 'Personal Injury' || category === 'Workers Comp' || category === 'Medical Malpractice' || category === 'Product Liability') {
+                extraFields.style.display = 'block';
             } else {
-                extraFields.style.display = "none";
+                extraFields.style.display = 'none';
             }
         }
     </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Legal Lead Ping/Post Form</h1>
+    <div class="form-container">
+        <h1>Legal Call Ping/Post Form</h1>
         <form method="post" action="/submit">
             <label>Filter_1 (Legal Category):</label>
-            <select name="filter_1" id="filter_1" onchange="updateCategoryFields()" required>
+            <select name="filter_1" id="filter_1" required onchange="updateFields()">
+                <option value="">-- Select Category --</option>
                 <option value="Auto Accident Injury">Auto Accident Injury</option>
                 <option value="Personal Injury">Personal Injury</option>
                 <option value="Workers Comp">Workers Comp</option>
                 <option value="Medical Malpractice">Medical Malpractice</option>
                 <option value="Product Liability">Product Liability</option>
+                <option value="Other">Other</option>
             </select>
 
             <label>ZIP Code:</label>
@@ -63,12 +64,28 @@
             <label>Landing Page:</label>
             <input type="text" name="landing_page" required>
 
-            <div id="extraFields" style="display:none;">
+            <div id="extra-fields" style="display:none;">
                 <label>Incident Date (MM/DD/YYYY):</label>
-                <input type="text" name="incident_date">
+                <input type="text" name="incident_date" placeholder="MM/DD/YYYY">
 
                 <label>Injury Type:</label>
-                <input type="text" name="injury_type">
+                <select name="injury_type">
+                    <option value="">-- Select Injury Type --</option>
+                    <option value="Anxiety">Anxiety</option>
+                    <option value="Back or Neck Pain">Back or Neck Pain</option>
+                    <option value="Brain Injury">Brain Injury</option>
+                    <option value="Broken Bones">Broken Bones</option>
+                    <option value="Cuts and Bruises">Cuts and Bruises</option>
+                    <option value="Dog Bite">Dog Bite</option>
+                    <option value="Headaches">Headaches</option>
+                    <option value="Loss of Life">Loss of Life</option>
+                    <option value="Loss of Limb">Loss of Limb</option>
+                    <option value="Memory Loss">Memory Loss</option>
+                    <option value="No Injury">No Injury</option>
+                    <option value="Spinal Cord Injury or Paralysis">Spinal Cord Injury or Paralysis</option>
+                    <option value="Whiplash">Whiplash</option>
+                    <option value="Other">Other</option>
+                </select>
 
                 <label>Were You At Fault:</label>
                 <select name="were_you_at_fault">
